@@ -4,9 +4,77 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bate papo UOL</title>
+    <title>Bate-Papo UOL</title>
+
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="script.js">
 </head>
 <body>
-    
+    <header>
+        <div class="topo">
+            <img src="images/uol.png">
+            <ion-icon name="people" class="icon"></ion-icon>
+        </div>
+    </header>
+
+    <ul>
+        <li>
+            <div class="mensagem-sistema"><h2>(09:22:38) </h2> <h1>João</h1> entra na sala...</div>
+            <div class="mensagem-sistema todos"><h2>(09:22:38) </h2> <h1>João</h1> para <h1>Todos:</h1> Hajimemashite</div>
+            <div class="mensagem-sistema privada"><h2>(09:22:38) </h2> <h1>João</h1> reservadamente para <h1>Maria:</h1> Yoroshiku onegai shimasu!</div>
+        </li>
+    </ul>
+
+    <div class="configuraçoes hidden">
+    <div></div>
+        <div class="summary">
+            <div class="summary top">
+                <h3>Escolha um contato para enviar mensagem:</h3>
+            </div>
+            <ul>
+                <li class="contatos">
+                    <span class="contato">
+                        <ion-icon name="people" class="icon"></ion-icon>
+                        Todos
+                    </span>
+                    <span class="contato">
+                        <ion-icon class="icon" name="person-circle"></ion-icon>
+                        João
+                    </span>
+                    <span class="contato">
+                        <ion-icon class="icon" name="person-circle"></ion-icon>
+                        Maria
+                    </span>
+                </li>
+            </ul>
+            <div class="summary top">
+                <h3>Escolha a visibilidade:</h3>
+            </div>
+            <ul>
+                <li>
+                    <span class="visibilidade">
+                        <ion-icon class="icon" name="lock-open"></ion-icon>
+                        Público
+                    </span>
+                    <span class="visibilidade">
+                        <ion-icon class="icon" name="lock-closed"></ion-icon>
+                        Reservadamente
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <div class="bottom-bar">
+            <input type="text" placeholder="Escreva aqui...">
+            <ion-icon class="icon" name="paper-plane-outline"></ion-icon>
+        </div>
+    </footer>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
