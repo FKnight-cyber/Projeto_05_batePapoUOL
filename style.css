@@ -35,6 +35,7 @@ h2{
 .icon{
     width: 42px;
     height: 32px;
+    cursor: pointer;
 }
 
 ul,li{
