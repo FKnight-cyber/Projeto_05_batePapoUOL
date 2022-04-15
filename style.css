@@ -70,11 +70,13 @@ h2{
 .mensagem-sistema.todos{
     background-color: #ffffff;
     white-space: break-spaces;
+    word-break: break-word;
 }
 
 .mensagem-sistema.privada{
     background-color: #ffdede;
     white-space: break-spaces;
+    word-break: break-word;
 }
 
 .bottom-bar{
