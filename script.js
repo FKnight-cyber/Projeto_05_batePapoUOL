@@ -1,48 +1,57 @@
-let mensagens;
-console.log(1);
+let mensagens = [];
+let participantes = [];
+let destinatario = "Todos";
+let estatus = "message"
+let nome;
 
-const resposta = [
-	{
-		from: "João",
-		to: "Todos",
-		text: "entra na sala...",
-		type: "status",
-		time: "08:01:17"
-	},
-	{
-		from: "João",
-		to: "Todos",
-		text: "Bom dia",
-		type: "message",
-		time: "08:02:50"
-	},
-]
+let loginInput = document.querySelector(".login");
+loginInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        login();
+    }
+});
+
+let textInput = document.querySelector(".enviar");
+textInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        enviarMensagem();
+    }
+});
 
 function login(){
-    const nome = document.querySelector(".nome").value;
+
+  nome = {
+    name: document.querySelector(".login").value
+  };
 
     const promessa = axios.post(
-        "https://mock-api.driven.com.br/api/v6/uol/participants",
-        {
-          name: nome,
-        }
-      );
+        "https://mock-api.driven.com.br/api/v6/uol/participants",nome);
 
-    promessa.then(nomeCadastrado);
-    promessa.catch(tratarError);
+    promessa.then(start);
+    promessa.catch(tratarErro);
 
-    onlineStatus();
+    document.querySelector(".login").value = '';
+}
+
+function start(){
+  document.querySelector(".tela-de-login").classList.add("hidden")
+  nomeCadastrado()
+  buscarParticipantes();
+  pegarMensagens();
+  setInterval(pegarMensagens,3000);
+  setInterval(buscarParticipantes,10000);
+  setInterval(function(){
+  onlineStatus();
+},5000);
+
+setInterval(atualizarMensagem,500);
+
 }
 
 function onlineStatus(){
-    setInterval(function () {
-        axios.post(
-            "https://mock-api.driven.com.br/api/v6/uol/status",
-            {
-              name: nome,
-            }
-          );
-    }, 4000);
+  axios.post(
+    "https://mock-api.driven.com.br/api/v6/uol/status",nome
+      );
 }
 
 function nomeCadastrado(){
@@ -52,23 +61,13 @@ function nomeCadastrado(){
 function tratarErro(error){
     if(error.response.status === 400){
         alert("Já existe um usuário online com esse nome, tente novamente");
+        window.location.reload();
     }
 }
 
-function renderizarMensagens() {
-    const ulMensagens = document.querySelector(".mensagens");
-    ulMensagens.innerHTML = "";
-  
-    for (let i = 0; i < mensagens.length; i++) {
-      ulMensagens.innerHTML += `
-      <div class="mensagem-sistema"><h2>(09:22:38) </h2> <h1>João</h1> entra na sala...</div>
-          `;
-    }
-  }
-
-function carregarMensagens(response){
-    mensagens = response.data;
-    renderizarMensagens();
+function tratarErroMens(error){
+  alert("Usuário desconectado");
+  window.location.reload();
 }
 
 function pegarMensagens() {
@@ -78,20 +77,130 @@ function pegarMensagens() {
     promise.then(carregarMensagens);
   }
 
+function carregarMensagens(response){
+    mensagens = response.data;
+    renderizarMensagens();
+}
+
+function renderizarMensagens() {
+  const ulMensagens = document.querySelector(".mensagens");
+  let numb = document.querySelector(".mensagens").childElementCount;
+  ulMensagens.innerHTML = "";
+
+  for (let i = 0; i < mensagens.length; i++) {
+    
+    if(mensagens[i].type === "status"){
+      ulMensagens.innerHTML += `
+    <div class="mensagem-sistema"><h2>${mensagens[i].time} </h2> <h1>${mensagens[i].from}</h1> ${mensagens[i].text}</div>
+        `;
+    }else if(mensagens[i].type ==="message"){
+      ulMensagens.innerHTML += `
+    <div class="mensagem-sistema todos"><h2>${mensagens[i].time} </h2> <h1>${mensagens[i].from}</h1> para <h1>${mensagens[i].to}:</h1> ${mensagens[i].text}</div>
+        `;
+    }else if((mensagens[i].from === nome.name && mensagens[i].to !== "Todos" && mensagens[i].type === "private_message") || 
+    mensagens[i].to === nome.name && mensagens[i].type === "private_message"){
+      ulMensagens.innerHTML += `
+    <div class="mensagem-sistema privada"><h2>${mensagens[i].time} </h2> <h1>${mensagens[i].from}</h1> reservadamente para <h1>${mensagens[i].to}:</h1> ${mensagens[i].text}</div>
+        `;
+    }else{
+      mensagens[i].pop;
+    }
+  }
+
+  let lastMessage = ulMensagens.children[numb-1];
+  lastMessage.scrollIntoView();
+}
+
+
+
 function enviarMensagem() {
     const mensagem = document.querySelector(".enviar").value;
 
-    console.log(mensagem)
-
     const novaMensagem = {
-        from: "asdasdasdasdasdadad",
-        to: "Todos",
+        from: nome.name,
+        to: destinatario,
         text: mensagem,
-        type: "message"
+        type: estatus
     }
 
     const promise = axios.post("https://mock-api.driven.com.br/api/v6/uol/messages", novaMensagem);
-
+                                                                
     promise.then(pegarMensagens);
-    promise.catch(tratarErro);
+    promise.catch(tratarErroMens);
+
+    document.querySelector(".enviar").value = '';
+}
+
+function openMenu(){
+  const elemento = document.querySelector(".configuraçoes");
+  elemento.classList.toggle("hidden");
+}
+
+function buscarParticipantes(){
+  const promise = axios.get(
+    "https://mock-api.driven.com.br/api/v6/uol/participants"
+  );
+  promise.then(carregarParticipantes);
+}
+
+function carregarParticipantes(response){
+  participantes = response.data;
+  renderizarParticipantes();
+}
+
+function renderizarParticipantes() {
+  const ulParticipantes = document.querySelector(".contatos");
+  ulParticipantes.innerHTML = "";
+
+  ulParticipantes.innerHTML += `
+  <span class="contato">
+  <ion-icon name="people" class="icon" onclick="openMenu()"></ion-icon>
+  Todos
+</span>
+    `
+
+  for(i = 1; i < participantes.length; i++){
+    ulParticipantes.innerHTML += `
+    <span class="contato">
+    <ion-icon class="icon" name="person-circle" onclick="sendTo(this)">${participantes[i].name}</ion-icon>
+    ${participantes[i].name}
+    <ion-icon class="check-icon hidden"name="checkmark-outline"></ion-icon>
+</span>
+    `
+  }
+}
+
+function sendTo(elemento){
+  const contatoSelecionado = document.querySelector(".contato.selecionado")
+  if(contatoSelecionado !== null){
+    contatoSelecionado.classList.toggle("selecionado");
+  }
+  elemento.parentNode.classList.toggle("selecionado");
+  destinatario = elemento.innerHTML;
+}
+
+function setVisibility(elemento){
+  const settedVisibility = document.querySelector(".visibilidade.selecionado");
+
+  if(settedVisibility !== null){
+    settedVisibility.classList.toggle("selecionado");
+  }
+
+  elemento.parentNode.classList.toggle("selecionado")
+  estatus = elemento.innerHTML;
+}
+
+function atualizarMensagem(){
+  const msg = document.querySelector(".aSerEnviado");
+  let msj;
+  if(estatus === "private_message"){
+    msj = "Reservadamente";
+  }else if(destinatario === "Todos"){
+    msj = "";
+  }else{
+    msj = "Público"
+  }
+  msg.innerHTML = `
+    Enviando para ${destinatario} (${msj})
+  `
 }

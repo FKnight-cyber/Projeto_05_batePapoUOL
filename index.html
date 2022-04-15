@@ -11,23 +11,26 @@
     <link rel="stylesheet" href="script.js">
 </head>
 <body>
+    <div class="tela-de-login">
+        <img src="images/uol.png">
+        <input class="login" type="text" onfocus="this.value=''" placeholder="Digite seu nome" >
+        <button onclick="login()">ENTRAR</button>
+    </div>
     <header>
         <div class="topo">
             <img src="images/uol.png">
-            <ion-icon name="people" class="icon"></ion-icon>
+            <ion-icon name="people" class="icon" onclick="openMenu()"></ion-icon>
         </div>
+        <div class="espaço"></div>
     </header>
 
     <ul>
         <li class="mensagens">
-            <div class="mensagem-sistema"><h2>(09:22:38) </h2> <h1>João</h1> entra na sala...</div>
-            <div class="mensagem-sistema todos"><h2>(09:22:38) </h2> <h1>João</h1> para <h1>Todos:</h1> Hajimemashite</div>
-            <div class="mensagem-sistema privada"><h2>(09:22:38) </h2> <h1>João</h1> reservadamente para <h1>Maria:</h1> Yoroshiku onegai shimasu!</div>
         </li>
     </ul>
 
     <div class="configuraçoes hidden">
-    <div></div>
+    <div class="escuridao" onclick="openMenu()"></div>
         <div class="summary">
             <div class="summary top">
                 <h3>Escolha um contato para enviar mensagem:</h3>
@@ -35,12 +38,13 @@
             <ul>
                 <li class="contatos">
                     <span class="contato">
-                        <ion-icon name="people" class="icon"></ion-icon>
+                        <ion-icon name="people" class="icon" onclick="sendTo(this),openMenu()">Todos</ion-icon>
                         Todos
                     </span>
                     <span class="contato">
-                        <ion-icon class="icon" name="person-circle"></ion-icon>
+                        <ion-icon class="icon" name="person-circle" onclick="sendTo(this)">João</ion-icon>
                         João
+                        <ion-icon class="check-icon"name="checkmark-outline"></ion-icon>
                     </span>
                     <span class="contato">
                         <ion-icon class="icon" name="person-circle"></ion-icon>
@@ -54,12 +58,14 @@
             <ul>
                 <li>
                     <span class="visibilidade">
-                        <ion-icon class="icon" name="lock-open"></ion-icon>
+                        <ion-icon class="icon" name="lock-open" onclick="setVisibility(this)">message</ion-icon>
                         Público
+                        <ion-icon class="check-icon"name="checkmark-outline"></ion-icon>
                     </span>
                     <span class="visibilidade">
-                        <ion-icon class="icon" name="lock-closed"></ion-icon>
+                        <ion-icon class="icon" name="lock-closed" onclick="setVisibility(this)">private_message</ion-icon>
                         Reservadamente
+                        <ion-icon class="check-icon"name="checkmark-outline"></ion-icon>
                     </span>
                 </li>
             </ul>
@@ -67,8 +73,10 @@
     </div>
 
     <footer>
+        <div class="espaço"></div>
         <div class="bottom-bar">
             <input class="enviar" type="text" placeholder="Escreva aqui...">
+            <div class="aSerEnviado">Enviando para Maria (Reservadamente)</div>
             <ion-icon class="icon" name="paper-plane-outline" onclick="enviarMensagem()"></ion-icon>
         </div>
         
