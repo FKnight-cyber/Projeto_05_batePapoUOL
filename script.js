@@ -89,27 +89,31 @@ function renderizarMensagens() {
   ulMensagens.innerHTML = "";
 
   for (let i = 0; i < mensagens.length; i++) {
-    
-    if(mensagens[i].type === "status"){
-      ulMensagens.innerHTML += `
-    <div class="mensagem-sistema"><h2>${mensagens[i].time} </h2> <h1>${mensagens[i].from}</h1> ${mensagens[i].text}</div>
-        `;
-    }else if(mensagens[i].type ==="message"){
-      ulMensagens.innerHTML += `
-    <div class="mensagem-sistema todos"><h2>${mensagens[i].time} </h2> <h1>${mensagens[i].from}</h1> para <h1>${mensagens[i].to}:</h1> ${mensagens[i].text}</div>
-        `;
-    }else if((mensagens[i].from === nome.name && mensagens[i].to !== "Todos" && mensagens[i].type === "private_message") || 
-    mensagens[i].to === nome.name && mensagens[i].type === "private_message"){
-      ulMensagens.innerHTML += `
-    <div class="mensagem-sistema privada"><h2>${mensagens[i].time} </h2> <h1>${mensagens[i].from}</h1> reservadamente para <h1>${mensagens[i].to}:</h1> ${mensagens[i].text}</div>
-        `;
-    }else{
-      mensagens[i].pop;
-    }
+    mensageType(mensagens[i]);
   }
 
   let lastMessage = ulMensagens.children[numb-1];
   lastMessage.scrollIntoView();
+}
+
+function mensageType(mensagem){
+  const ulMensagens = document.querySelector(".mensagens");
+  if(mensagem.type === "status"){
+    ulMensagens.innerHTML += `
+  <div class="mensagem-sistema"><h2>${mensagem.time} </h2> <h1>${mensagem.from}</h1> ${mensagem.text}</div>
+      `;
+  }else if(mensagem.type ==="message"){
+    ulMensagens.innerHTML += `
+  <div class="mensagem-sistema todos"><h2>${mensagem.time} </h2> <h1>${mensagem.from}</h1> para <h1>${mensagem.to}:</h1> ${mensagem.text}</div>
+      `;
+  }else if((mensagem.from === nome.name && mensagem.to !== "Todos" && mensagem.type === "private_message") || 
+  mensagem.to === nome.name && mensagem.type === "private_message"){
+    ulMensagens.innerHTML += `
+  <div class="mensagem-sistema privada"><h2>${mensagem.time} </h2> <h1>${mensagem.from}</h1> reservadamente para <h1>${mensagem.to}:</h1> ${mensagem.text}</div>
+      `;
+  }else{
+    mensagem.pop;
+  }
 }
 
 
