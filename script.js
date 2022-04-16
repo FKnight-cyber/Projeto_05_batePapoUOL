@@ -1,5 +1,6 @@
 let mensagens = [];
 let participantes = [];
+let activeUsers = ["Todos"];
 let destinatario = "Todos";
 let estatus = "message"
 let nome;
@@ -113,6 +114,7 @@ function renderizarMensagens() {
 
 
 
+
 function enviarMensagem() {
     const mensagem = document.querySelector(".enviar").value;
 
@@ -150,23 +152,35 @@ function carregarParticipantes(response){
 
 function renderizarParticipantes() {
   const ulParticipantes = document.querySelector(".contatos");
-  ulParticipantes.innerHTML = "";
 
-  ulParticipantes.innerHTML += `
-  <span class="contato">
-  <ion-icon name="people" class="icon" onclick="openMenu()"></ion-icon>
-  Todos
-</span>
-    `
-
-  for(i = 1; i < participantes.length; i++){
-    ulParticipantes.innerHTML += `
+  ulParticipantes.innerHTML = `
     <span class="contato">
-    <ion-icon class="icon" name="person-circle" onclick="sendTo(this)">${participantes[i].name}</ion-icon>
-    ${participantes[i].name}
-    <ion-icon class="check-icon hidden"name="checkmark-outline"></ion-icon>
-</span>
-    `
+      <ion-icon name="people" class="icon" onclick="sendTo(this),openMenu()">Todos</ion-icon>
+      Todos
+      </span>
+  `
+  
+  for(i = 1; i < participantes.length; i++){
+    if(activeUsers.includes(participantes[i].name) === false){
+      activeUsers.push(participantes[i]);
+      if(destinatario == participantes[i].name){
+        ulParticipantes.insertAdjacentHTML("beforeend", `
+      <span class="contato selecionado">
+      <ion-icon class="icon" name="person-circle" onclick="sendTo(this)">${participantes[i].name}</ion-icon>
+      ${participantes[i].name}
+      <ion-icon class="check-icon hidden"name="checkmark-outline"></ion-icon>
+      </span>
+      `);
+      }else{
+        ulParticipantes.insertAdjacentHTML("beforeend", `
+      <span class="contato">
+      <ion-icon class="icon" name="person-circle" onclick="sendTo(this)">${participantes[i].name}</ion-icon>
+      ${participantes[i].name}
+      <ion-icon class="check-icon hidden"name="checkmark-outline"></ion-icon>
+      </span>
+      `);
+      }
+    }
   }
 }
 
