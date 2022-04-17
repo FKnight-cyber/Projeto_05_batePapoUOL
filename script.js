@@ -106,7 +106,8 @@ function mensageType(mensagem){
     ulMensagens.innerHTML += `
   <div class="mensagem-sistema todos"><h2>${mensagem.time} </h2> <h1>${mensagem.from}</h1> para <h1>${mensagem.to}:</h1> ${mensagem.text}</div>
       `;
-  }else if((mensagem.from === nome.name && mensagem.to !== "Todos" && mensagem.type === "private_message") || 
+  }
+  else if((mensagem.from === nome.name && mensagem.type === "private_message") || 
   mensagem.to === nome.name && mensagem.type === "private_message"){
     ulMensagens.innerHTML += `
   <div class="mensagem-sistema privada"><h2>${mensagem.time} </h2> <h1>${mensagem.from}</h1> reservadamente para <h1>${mensagem.to}:</h1> ${mensagem.text}</div>
@@ -159,8 +160,9 @@ function renderizarParticipantes() {
 
   ulParticipantes.innerHTML = `
     <span class="contato">
-      <ion-icon name="people" class="icon" onclick="sendTo(this),openMenu()">Todos</ion-icon>
+      <ion-icon name="people" class="icon" onclick="sendTo(this)">Todos</ion-icon>
       Todos
+      <ion-icon class="check-icon hidden"name="checkmark-outline"></ion-icon>
       </span>
   `
   
@@ -205,6 +207,7 @@ function setVisibility(elemento){
   }
 
   elemento.parentNode.classList.toggle("selecionado")
+
   estatus = elemento.innerHTML;
 }
 
