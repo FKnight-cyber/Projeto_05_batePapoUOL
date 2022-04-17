@@ -28,14 +28,26 @@ function login(){
     const promessa = axios.post(
         "https://mock-api.driven.com.br/api/v6/uol/participants",nome);
 
+    loading();
+
     promessa.then(start);
     promessa.catch(tratarErro);
 
     document.querySelector(".login").value = '';
 }
 
+function loading(){
+  document.querySelector(".loader").classList.toggle("hidden")
+  document.querySelector(".enter").classList.toggle("hidden")
+  document.querySelector(".login").classList.toggle("hidden")
+  document.querySelector(".butao").classList.toggle("hidden")
+}
+
 function start(){
+  setTimeout(function(){
   document.querySelector(".tela-de-login").classList.add("hidden")
+  document.querySelector(".loader,.enter").classList.toggle("hidden")
+  },5000)
   nomeCadastrado()
   buscarParticipantes();
   pegarMensagens();
