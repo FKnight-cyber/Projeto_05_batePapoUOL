@@ -117,11 +117,18 @@ textarea:focus, input:focus{
     outline: none;
 }
 
-::placeholder{
-    font-size: 18px;
-    font-style: italic;
-    color: #AEAEAE;
-    font-weight: bolder;
+.login::placeholder {
+  font-size: 18px;
+  font-style: italic;
+  color: #AEAEAE;
+  font-weight: bolder;
+}
+
+.enviar::placeholder {
+  font-size: 18px;
+  font-style: italic;
+  color: #000000;
+  font-weight: bolder;
 }
 
 .configuraçoes{
